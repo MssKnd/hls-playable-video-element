@@ -7,6 +7,7 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
   #config: Partial<Hls.Config> = {};
   #playlist: string | null = null;
   #enableHlsJs = false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   #callbacks: { [key in HlsEventType]?: (event: HlsEventType, data: any) => void } = {};
   #enableDebug = false;
 
@@ -70,7 +71,7 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
     }
     this.hls = new Hls(this.#config);
     this.hls.attachMedia(this);
-    this.logger('hls.js initialized')
+    this.logger('hls.js initialized');
 
     if (this.#playlist) {
       this.hls?.loadSource(this.#playlist);

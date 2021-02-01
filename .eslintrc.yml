@@ -11,4 +11,7 @@ parserOptions:
   sourceType: module
 plugins:
   - '@typescript-eslint'
-rules: {}
+rules:
+  semi: 'error'
+  '@typescript-eslint/ban-ts-ignore': 'off'
+  '@typescript-eslint/ban-ts-comment': 'off'
