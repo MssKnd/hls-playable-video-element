@@ -26,3 +26,7 @@ module.exports = {
     ]
   }
 };
+
+if (process.env.NODE_ENV !== 'production') {
+  module.exports.devtool = 'inline-source-map';
+}
