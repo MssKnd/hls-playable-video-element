@@ -39,7 +39,7 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
   }
 
   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
-    this.logger('attribute change:' + name + ' ' + newValue + ' ' + oldValue);
+    this.logger('attribute change:' + name);
     if (
       name === 'src' &&
       newValue?.endsWith('.m3u8') &&
@@ -89,6 +89,9 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
       // @ts-ignore
       this.hls?.off(hlsEventType, this.#callbacks[hlsEventType]);
     }
+    this.hls?.detachMedia();
+    this.hls?.destroy();
+    this.logger('finalaized');
   }
 
   logger(message: string) {
