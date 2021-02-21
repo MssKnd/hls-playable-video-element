@@ -2,15 +2,17 @@
   "name": "hls-video-element",
   "version": "0.1.0",
   "description": "This custom video element is hls playable",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "webpack --watch --mode development",
     "build": "NODE_ENV=production webpack --mode production",
     "lint": "eslint src/*.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run build"
   },
   "keywords": [
-    "hls", "custom element"
+    "hls",
+    "custom element"
   ],
   "author": "mssknd",
   "license": "Apache-2.0",
