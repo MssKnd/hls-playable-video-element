@@ -2,7 +2,7 @@ import Hls from 'hls.js';
 
 type HlsEventType = typeof Hls.Events[keyof typeof Hls.Events];
 
-class HlsPlayableVideoElement extends HTMLVideoElement {
+export class HlsPlayableVideoElement extends HTMLVideoElement {
   hls: Hls | null = null;
   #config: Partial<Hls.Config> = {};
   #playlist: string | null = null;
@@ -14,14 +14,13 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
   constructor() {
     super();
     this.#enableHlsJs = Hls.isSupported() || !this.canPlayType('application/vnd.apple.mpegurl');
-    this.logger('hls.js ' + this.#enableHlsJs ? 'enabled' : 'disabled');
   }
 
-  static get observedAttributes() {
+  private static get observedAttributes() {
     return ['src'];
   }
 
-  get config() {
+  get config(): Partial<Hls.Config> {
     return { ...this.#config };
   }
 
@@ -29,6 +28,9 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
     if (this.#enableHlsJs) {
       if (value?.debug) {
         this.#enableDebug = true;
+        this.logger('hls.js ' + this.#enableHlsJs ? 'enabled' : 'disabled');
+      } else {
+        this.#enableDebug = false;
       }
       this.#config = value;
       this.logger('config updated');
@@ -38,7 +40,7 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
     }
   }
 
-  attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
+  private attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
     this.logger('attribute change:' + name);
     if (
       name === 'src' &&
@@ -56,14 +58,14 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
     }
   }
 
-  disconnectedCallback() {
+  private disconnectedCallback(): void {
     this.logger('disconnect');
     if (this.hls) {
       this.removeHlsJsEventListner();
     }
   }
 
-  initHlsJs() {
+  private initHlsJs() {
     if (this.hls) {
       this.removeHlsJsEventListner();
       this.hls.destroy();
@@ -84,7 +86,7 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
     }
   }
 
-  removeHlsJsEventListner() {
+  private removeHlsJsEventListner() {
     for (const hlsEventType of Object.values(Hls.Events)) {
       // @ts-ignore
       this.hls?.off(hlsEventType, this.#callbacks[hlsEventType]);
@@ -94,7 +96,7 @@ class HlsPlayableVideoElement extends HTMLVideoElement {
     this.logger('finalaized');
   }
 
-  logger(message: string) {
+  private logger(message: string) {
     if (this.#enableDebug) {
       console.log('[log: hls-playable] > ' + message);
     }
